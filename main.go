@@ -6,5 +6,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello World!")
+
+	var fun bool
+	fun = true
+
+	fmt.Printf("Is Go fun? %t \n", fun)
 }
