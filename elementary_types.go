@@ -196,6 +196,17 @@ func mapType() {
 	numbers["ten"] = 10
 	numbers["three"] = 3
 
+	//for range to iterate over map
+	for k, v := range numbers {
+		fmt.Println("numbers's key:", k)
+		fmt.Println("numbers's val:", v)
+	}
+
+	//if you want only value
+	for _, v := range numbers {
+		fmt.Println("numbers's val:", v)
+	}
+
 	//Get value from map
 	fmt.Printf("The third number is: %d \n", numbers["three"])
 
