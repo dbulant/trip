@@ -12,7 +12,7 @@ type person struct {
 func basicStructUsage() {
 	var P person // p is person type
 
-	P.name = "Yen"                                  // assign "Astaxie" to the field 'name' of p
+	P.name = "Yen"                                  // assign "Yen" to the field 'name' of p
 	P.age = 28                                      // assign 25 to field 'age' of p
 	fmt.Printf("The person's name is %s\n", P.name) // access field 'name' of p
 }
@@ -35,6 +35,7 @@ type Human struct {
 	name   string
 	age    int
 	weight int
+	phone  string
 }
 
 func embeddedFields1() {
@@ -72,9 +73,13 @@ type Student struct {
 	specialty string
 }
 
+func (s *Student) SayHello() {
+	fmt.Printf("Hello, I am %s my specialization is: %s \n", s.name, s.specialty)
+}
+
 func embeddedFields2() {
 	// initialize Student Jane
-	jane := Student{Human: Human{"Jane", 35, 100}, specialty: "Biology"}
+	jane := Student{Human: Human{"Jane", 35, 100, "333-555-666"}, specialty: "Biology"}
 	// access fields
 	fmt.Println("Her name is ", jane.name)
 	fmt.Println("Her age is ", jane.age)
@@ -92,21 +97,20 @@ func embeddedFields2() {
 	fmt.Println("Her preferred number is ", jane.int)
 }
 
-type Person struct {
-	name  string
-	age   int
-	phone string // Human has phone field
+type Employee struct {
+	Human
+	company string
+	phone   string // phone in employee
 }
 
-type Employee struct {
-	Person
-	specialty string
-	phone     string // phone in employee
+func (e *Employee) SayHello() {
+	fmt.Printf("Hi, I am %s, I work at %s. Call me on %s\n", e.name,
+		e.company, e.phone) //You can split into 2 lines here.
 }
 
 func outerInnerAccess() {
-	Bob := Employee{Person{"Bob", 34, "777-444-XXXX"}, "Designer", "333-222"}
+	Bob := Employee{Human{"Bob", 34, 200, "777-444-XXXX"}, "Designer", "333-222"}
 
 	fmt.Println("Bob's work phone is:", Bob.phone)
-	fmt.Println("Bob's personal phone is:", Bob.Person.phone)
+	fmt.Println("Bob's personal phone is:", Bob.Human.phone)
 }

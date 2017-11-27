@@ -61,8 +61,6 @@ func (server *RestServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	//TODO proper sanitization of input, regex things this is valid http://127.0.0.1:9876/people/10fg56
-	//TODO return proper error code
 
 	match := VALID_PATH_REGEX.FindAllString(path, 1)
 	fmt.Printf("found match is %s \n", match[0])
@@ -77,17 +75,19 @@ func (server *RestServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	method := req.Method
 	if method == "GET" {
+
+		fmt.Printf("Method GET \n")
+
 		person, found := server.cache.GetPerson(personId)
 		if found {
-			jsonBytes, err := createPersonJson(person)
+			rw.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(rw).Encode(person)
 			if handlePossibleInternalServerError(&err, &rw) {
 				return
 			}
 
-			json.NewEncoder(rw).Encode(jsonBytes)
-			if handlePossibleInternalServerError(&err, &rw) {
-				return
-			}
+		} else {
+			http.Error(rw, "No entry with this Id", http.StatusNotFound)
 		}
 	} else if method == "POST" {
 
