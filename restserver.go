@@ -3,7 +3,6 @@ package main
 
 import (
 	"encoding/json"
-	//"log"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -28,7 +27,7 @@ type Address struct {
 }
 
 func init() {
-	VALID_PATH_REGEX = regexp.MustCompile("/people/[0-9]+")
+	VALID_PATH_REGEX = regexp.MustCompile("/people/[0-9]+$")
 }
 
 type RestServer struct {
@@ -46,10 +45,7 @@ func (server *RestServer) Listen(address string) error {
 }
 
 func (server *RestServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	//if method == GET, get stuff from database
-	//if method == DELETE delete stuff from database
-	//if method == POST create stuff and put into database
-
+	//TODO proper testing
 	path := req.URL.Path
 	if path == "/" {
 		fmt.Fprintf(rw, "Welcome  to the RestSever! \n")
